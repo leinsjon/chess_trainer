@@ -17,6 +17,7 @@
       <h1>Piggy Chess</h1>
       <div class="home-buttons">
         <button class="big-btn" data-go="lessons">📚 Learn</button>
+        <button class="big-btn" data-go="play">♟️ Play</button>
       </div>
     </section>
 
@@ -33,17 +34,35 @@
       <header class="topbar">
         <button class="icon-btn" data-go="lessons" aria-label="Back">⬅️</button>
         <h2 id="level-title"></h2>
-        <button class="icon-btn" id="sound-btn" aria-label="Sound">🔊</button>
+        <button class="icon-btn sound-btn" aria-label="Sound">🔊</button>
       </header>
       <div id="level-dots" class="level-dots"></div>
       <div class="talk-row">
         <div class="mascot">🐷</div>
         <div id="talk" class="bubble"></div>
-        <button class="icon-btn" id="repeat-btn" aria-label="Say it again">🗣️</button>
+        <button class="icon-btn repeat-btn" aria-label="Say it again">🗣️</button>
       </div>
       <div class="board-wrap"><div id="board"></div></div>
       <div class="under-board">
         <button class="pill-btn" id="help-btn">💡 Help</button>
+      </div>
+    </section>
+
+    <section id="play" class="screen">
+      <header class="topbar">
+        <button class="icon-btn" data-go="home" aria-label="Back">⬅️</button>
+        <h2>Play</h2>
+        <button class="icon-btn sound-btn" aria-label="Sound">🔊</button>
+      </header>
+      <div class="talk-row">
+        <div class="mascot">🐷</div>
+        <div id="play-talk" class="bubble"></div>
+        <button class="icon-btn repeat-btn" aria-label="Say it again">🗣️</button>
+      </div>
+      <div class="board-wrap"><div id="play-board"></div></div>
+      <div class="under-board">
+        <button class="pill-btn" id="undo-btn">↩️ Undo</button>
+        <button class="pill-btn" id="new-game-btn">🔄 New game</button>
       </div>
     </section>
 

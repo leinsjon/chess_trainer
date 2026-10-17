@@ -3,9 +3,11 @@ import { LESSONS } from './lessons.js';
 import { playLevel } from './lessonPlayer.js';
 import { say, sfx, isMuted, setMuted, stopSpeaking } from './sound.js';
 import { isDone, doneCount, markLevelDone, markLessonDone } from './progress.js';
+import { GameScreen, endMessage } from './game.js';
 
 const $ = (id) => document.getElementById(id);
 const board = new Board($('board'));
+const playBoard = new Board($('play-board'));
 
 let current = null; // { lesson, index, ctl }
 let lastTalk = '';
@@ -14,6 +16,8 @@ function show(screen) {
   stopSpeaking();
   document.querySelectorAll('.screen').forEach((s) => s.classList.toggle('active', s.id === screen));
   if (screen === 'lessons') renderLessons();
+  if (screen === 'play') gameScreen.start(false);
+  else gameScreen.stop();
 }
 
 document.addEventListener('click', (e) => {
@@ -21,9 +25,8 @@ document.addEventListener('click', (e) => {
   if (go) show(go.dataset.go);
 });
 
-function talk(text, speak) {
+function talk(text, speak, el = $('talk')) {
   lastTalk = text;
-  const el = $('talk');
   el.textContent = text;
   el.classList.remove('pop');
   el.getBoundingClientRect();
@@ -31,10 +34,26 @@ function talk(text, speak) {
   if (speak) say(text);
 }
 
-$('repeat-btn').addEventListener('click', () => say(lastTalk));
-function syncSoundBtn() { $('sound-btn').textContent = isMuted() ? '🔇' : '🔊'; }
-$('sound-btn').addEventListener('click', () => { setMuted(!isMuted()); syncSoundBtn(); });
+document.querySelectorAll('.repeat-btn').forEach((b) => b.addEventListener('click', () => say(lastTalk)));
+function syncSoundBtn() {
+  document.querySelectorAll('.sound-btn').forEach((b) => { b.textContent = isMuted() ? '🔇' : '🔊'; });
+}
+document.querySelectorAll('.sound-btn').forEach((b) => b.addEventListener('click', () => { setMuted(!isMuted()); syncSoundBtn(); }));
 syncSoundBtn();
+
+const gameScreen = new GameScreen({
+  board: playBoard,
+  talk: (text, speak) => talk(text, speak, $('play-talk')),
+  onEnd: (result, game) => overlay({
+    text: endMessage(result, game),
+    stars: result === 'win' ? 3 : 0,
+    button: 'Play again 🔄',
+    speak: true,
+    then: () => gameScreen.start(true),
+  }),
+});
+$('undo-btn').addEventListener('click', () => gameScreen.undo());
+$('new-game-btn').addEventListener('click', () => gameScreen.start(true));
 $('help-btn').addEventListener('click', () => current?.ctl.help());
 
 function renderLessons() {

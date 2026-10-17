@@ -16,9 +16,12 @@ Then open http://localhost:8000.
 
 ```
 node tests/lessons.test.mjs
+node tests/bot.test.mjs
 ```
 
-Checks that every lesson level can be solved.
+`node tests/bot.test.mjs` plays the bot against a simple greedy player to check it stays easy to beat.
+
+The first checks that every lesson level can be solved.
 
 ## Credits
 
