@@ -24,7 +24,7 @@ export function today() {
 
 function day() {
   const k = today();
-  state.days[k] ||= { seconds: 0, moves: 0, levels: [], lessons: [], games: 0, wins: 0 };
+  if (!state.days[k]) state.days[k] = { seconds: 0, moves: 0, levels: [], lessons: [], games: 0, wins: 0 };
   return state.days[k];
 }
 

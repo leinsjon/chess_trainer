@@ -172,3 +172,4 @@ document.addEventListener('touchmove', (e) => {
 }, { passive: false });
 
 startReporting();
+window.piggyReady = true;

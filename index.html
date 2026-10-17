@@ -78,6 +78,22 @@
       </div>
     </div>
   </main>
+  <div id="boot-error" hidden style="position:fixed;left:16px;right:16px;bottom:16px;background:#fff;border-radius:16px;padding:16px;font:16px/1.4 sans-serif;color:#3b2a4a;z-index:99"></div>
+  <script>
+    // If the game can't start (an older iPad browser, say), show why instead of a dead page.
+    (function () {
+      var shown = false;
+      function show(why) {
+        if (shown || window.piggyReady) return;
+        shown = true;
+        var el = document.getElementById('boot-error');
+        el.hidden = false;
+        el.textContent = 'Piggy Chess could not start on this browser. Please send this to Jon: ' + why + ' | ' + navigator.userAgent;
+      }
+      window.addEventListener('error', function (e) { show(e.message || 'script error'); });
+      setTimeout(function () { show('did not load'); }, 6000);
+    })();
+  </script>
   <script type="module" src="js/app.js"></script>
 </body>
 </html>
