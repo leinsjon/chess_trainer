@@ -5,6 +5,7 @@ import { say, sfx, isMuted, setMuted, stopSpeaking } from './sound.js';
 import { isDone, doneCount, markLevelDone, markLessonDone } from './progress.js';
 import { GameScreen, endMessage } from './game.js';
 import { mood, confetti } from './mascot.js';
+import { startReporting } from './report.js';
 
 const $ = (id) => document.getElementById(id);
 const board = new Board($('board'));
@@ -165,3 +166,5 @@ document.addEventListener('dblclick', (e) => e.preventDefault());
 document.addEventListener('touchmove', (e) => {
   if (!e.target.closest('.lesson-list')) e.preventDefault();
 }, { passive: false });
+
+startReporting();
