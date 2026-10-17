@@ -62,18 +62,20 @@ $('help-btn').addEventListener('click', () => current?.ctl.help());
 function renderLessons() {
   const list = $('lesson-list');
   list.innerHTML = '';
+  // Everything stays open, but the first unfinished lesson glows as the suggestion.
+  const next = LESSONS.find((l) => doneCount(l) < l.levels.length);
   for (const lesson of LESSONS) {
     const n = doneCount(lesson);
     const all = n === lesson.levels.length;
     const b = document.createElement('button');
-    b.className = 'lesson-card' + (all ? ' complete' : '');
-    b.innerHTML = `
-      <img src="assets/pieces/${lesson.icon}.svg" alt="">
+    b.className = 'lesson-card' + (all ? ' complete' : '') + (lesson === next ? ' next' : '');
+    b.innerHTML = `${lesson === next ? '<span class="next-badge">Next ⭐</span>' : ''}
+      ${lesson.emoji ? `<span class="lesson-emoji">${lesson.emoji}</span>` : `<img src="assets/pieces/${lesson.icon}.svg" alt="">`}
       <span class="lesson-name">${lesson.title}</span>
       <span class="lesson-stars">${'⭐'.repeat(n)}${'☆'.repeat(lesson.levels.length - n)}</span>`;
     b.addEventListener('click', () => {
-      const next = lesson.levels.findIndex((_, i) => !isDone(lesson.id, i));
-      startLesson(lesson, next < 0 ? 0 : next);
+      const level = lesson.levels.findIndex((_, i) => !isDone(lesson.id, i));
+      startLesson(lesson, level < 0 ? 0 : level);
     });
     list.appendChild(b);
   }
@@ -84,7 +86,7 @@ function startLesson(lesson, index) {
   if (index === 0) {
     overlay({
       text: lesson.intro,
-      img: pieceImg('w', lesson.icon[1]),
+      img: lesson.emoji || pieceImg('w', lesson.icon[1]),
       button: "Let's go! ➡️",
       speak: true,
       then: () => startLevel(lesson, 0),
@@ -146,7 +148,9 @@ function overlay({ text, stars = 0, img, button, speak, then, party }) {
   sfx.oink();
   if (party) confetti();
   $('overlay-text').textContent = text;
-  $('overlay-stars').innerHTML = img ? `<img class="intro-piece" src="${img}" alt="">` : '⭐'.repeat(stars);
+  $('overlay-stars').innerHTML = !img ? '⭐'.repeat(stars)
+    : img.endsWith('.svg') ? `<img class="intro-piece" src="${img}" alt="">`
+    : `<span class="intro-emoji">${img}</span>`;
   const btn = $('overlay-btn');
   btn.textContent = button;
   btn.onclick = () => {

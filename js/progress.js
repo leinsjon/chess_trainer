@@ -60,6 +60,10 @@ export function countGame(won) {
   save();
 }
 
+export function totalGames() {
+  return Object.values(state.days).reduce((n, d) => n + d.games, 0);
+}
+
 export function usage() {
   return state.days;
 }

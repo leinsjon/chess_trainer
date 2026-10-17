@@ -129,6 +129,8 @@ h1 { font-size: clamp(44px, 9vw, 84px); margin: 0; color: var(--pink-dark); text
 }
 .lesson-card:active { transform: translateY(4px); box-shadow: 0 2px 0 #e7cfe0; }
 .lesson-card img { width: 84px; height: 84px; }
+.lesson-emoji { font-size: 62px; line-height: 84px; height: 84px; }
+.intro-emoji { font-size: 90px; }
 .lesson-card.complete { background: #fff4c7; box-shadow: 0 6px 0 var(--gold); }
 .lesson-name { font-size: 26px; font-weight: 700; }
 .lesson-stars { font-size: 18px; letter-spacing: 1px; color: #c9a227; }
@@ -253,3 +255,34 @@ h1 { font-size: clamp(44px, 9vw, 84px); margin: 0; color: var(--pink-dark); text
 .card h2 { font-size: clamp(24px, 4vw, 34px); margin: 12px 0 22px; }
 .stars { font-size: 48px; min-height: 10px; }
 .intro-piece { width: 110px; height: 110px; }
+
+.trace { position: absolute; inset: 0; width: 100%; height: 100%; }
+.trace polyline {
+  fill: none;
+  stroke: var(--pink-dark);
+  stroke-width: 14;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: draw-l 0.5s ease forwards, fade 0.4s ease 1.3s forwards;
+}
+.trace circle { fill: var(--pink-dark); animation: fade 0.4s ease 1.3s forwards; }
+@keyframes draw-l { to { stroke-dashoffset: 0; } }
+@keyframes fade { to { opacity: 0; } }
+
+.lesson-card { position: relative; }
+.lesson-card.next { outline: 5px solid var(--gold); animation: glow 1.6s ease-in-out infinite; }
+.next-badge {
+  position: absolute;
+  top: -12px;
+  right: -8px;
+  background: var(--gold);
+  color: var(--ink);
+  font-size: 18px;
+  font-weight: 800;
+  padding: 4px 12px;
+  border-radius: 999px;
+  box-shadow: 0 3px 0 #d9a300;
+}
+@keyframes glow { 50% { box-shadow: 0 6px 0 #e7cfe0, 0 0 24px 6px rgba(255, 201, 60, 0.8); } }

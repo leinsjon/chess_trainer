@@ -3,19 +3,22 @@
 import { Chess } from '../vendor/chess.js';
 import { lessonMoves } from './lessonMoves.js';
 import { sfx } from './sound.js';
-import { countMove, countGame } from './progress.js';
+import { countMove, countGame, totalGames } from './progress.js';
 import { mood } from './mascot.js';
 
 const NAMES = { p: 'pawn', n: 'knight', b: 'bishop', r: 'rook', q: 'queen', k: 'king' };
 const SAVE_KEY = 'chessTrainer.game';
 
+const VALUES = { p: 1, n: 3, b: 3, r: 5, q: 9 };
+const HELPER_GAMES = 3; // her first games: the bot never checkmates and points out free pieces
+
 // Mostly random moves. Sometimes grabs a free piece so captures feel real,
-// and only finishes the game half the time it could.
-export function botMove(game, rand = Math.random) {
+// and only finishes the game half the time it could (never, when helping).
+export function botMove(game, rand = Math.random, helping = false) {
   const moves = game.moves({ verbose: true });
   if (!moves.length) return null;
   const mates = moves.filter((m) => m.san.endsWith('#'));
-  if (mates.length && rand() < 0.5) return mates[0];
+  if (mates.length && !helping && rand() < 0.5) return mates[0];
   const safe = moves.filter((m) => !m.san.endsWith('#'));
   const pool = safe.length ? safe : moves;
   const captures = pool.filter((m) => m.captured);
@@ -48,6 +51,7 @@ export class GameScreen {
       }
     }
     if (this.game.isGameOver()) this.game = new Chess();
+    this.helping = totalGames() < HELPER_GAMES;
     this.resetIds();
     this.selected = null;
     const hist = this.game.history({ verbose: true });
@@ -138,6 +142,7 @@ export class GameScreen {
       return;
     }
     this.play(move.promotion ? { ...move, promotion: 'q' } : move);
+    if (move.piece === 'n') this.board.trace(move.from, move.to);
     countMove();
     if (!this.finished()) this.botTurn();
   }
@@ -160,14 +165,31 @@ export class GameScreen {
     const gen = this.gen;
     setTimeout(() => {
       if (gen !== this.gen) return;
-      const move = this.play(botMove(this.game));
+      const move = this.play(botMove(this.game, Math.random, this.helping));
       this.busy = false;
       if (this.finished()) return;
+      const free = this.helping && !this.game.inCheck() && this.freePiece();
       if (this.game.inCheck()) this.talk('Check! Your king is in danger. Keep him safe!', true);
-      else if (move.captured) this.talk(`Oh! I took your ${NAMES[move.captured]}.`, true);
+      else if (free) {
+        this.talk(`Look! That ${NAMES[free.captured]} is all alone. Can you take it?`, true);
+        this.board.setMarks({ [free.to]: 'ring' });
+      } else if (move.captured) this.talk(`Oh! I took your ${NAMES[move.captured]}.`, true);
       else if (move.promotion) this.talk('My pawn became a queen!', true);
       else this.talk('Your turn!', false);
     }, 900);
+  }
+
+  // The best black piece she can take without it being taken back.
+  freePiece() {
+    let best = null;
+    for (const m of this.game.moves({ verbose: true })) {
+      if (!m.captured) continue;
+      this.game.move(m);
+      const safe = !this.game.isAttacked(m.to, 'b');
+      this.game.undo();
+      if (safe && (!best || VALUES[m.captured] > VALUES[best.captured])) best = m;
+    }
+    return best;
   }
 
   finished() {

@@ -58,3 +58,26 @@ export function lessonMoves(sq, pieces) {
   }
   return out;
 }
+
+// Squares the given side attacks, counting squares its own pieces stand on
+// (those pieces are guarded). Used for "is it safe?" levels.
+export function attackedSquares(color, pieces) {
+  const out = new Set();
+  for (const [sq, p] of pieces) {
+    if (p.color !== color) continue;
+    const { x, y } = squareXY(sq);
+    if (p.type === 'p') {
+      const dir = color === 'w' ? 1 : -1;
+      for (const dx of [-1, 1]) {
+        const to = xySquare(x + dx, y + dir);
+        if (to) out.add(to);
+      }
+      continue;
+    }
+    // Pretend every other piece is an enemy so guarded squares count too.
+    const view = new Map();
+    for (const [s, q] of pieces) view.set(s, s === sq ? q : { ...q, color: color === 'w' ? 'b' : 'w' });
+    for (const to of lessonMoves(sq, view)) out.add(to);
+  }
+  return out;
+}

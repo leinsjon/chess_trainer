@@ -122,6 +122,21 @@ export class Board {
     }
   }
 
+  // Draw the knight's L: two squares one way, then one to the side.
+  trace(from, to) {
+    const a = squareXY(from);
+    const b = squareXY(to);
+    const corner = Math.abs(b.x - a.x) === 2 ? { x: b.x, y: a.y } : { x: a.x, y: b.y };
+    const pt = (p) => `${p.x * 100 + 50},${(7 - p.y) * 100 + 50}`;
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('viewBox', '0 0 800 800');
+    svg.setAttribute('class', 'trace');
+    svg.innerHTML = `<polyline points="${pt(a)} ${pt(corner)} ${pt(b)}" pathLength="1"/>
+      <circle cx="${a.x * 100 + 50}" cy="${(7 - a.y) * 100 + 50}" r="12"/>`;
+    this.layer.prepend(svg);
+    setTimeout(() => svg.remove(), 1800);
+  }
+
   flash(sq, cls = 'bad') {
     const d = this.squares[sq];
     d.classList.remove(cls);
