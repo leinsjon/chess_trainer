@@ -109,7 +109,8 @@ export class Board {
       const m = this.squares[sq].querySelector('.mark');
       const kind = marks[sq] || '';
       m.className = 'mark ' + kind;
-      m.textContent = kind.includes('apple') ? '🍎' : kind === 'star' ? '⭐' : '';
+      if (kind === 'pig') m.innerHTML = '<img src="assets/pig.svg" alt="">';
+      else m.textContent = kind.includes('apple') ? '🍎' : kind === 'star' ? '⭐' : '';
     }
   }
 

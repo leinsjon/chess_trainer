@@ -148,7 +148,7 @@ export function playLevel({ board, level, lesson, talk, setHelp, onWin }) {
     const draw = (hint) => {
       board.setPieces([...pieces].map(([sq, p]) => ({ ...p, sq })));
       const marks = {};
-      for (const f of found) marks[f] = 'star';
+      for (const f of found) marks[f] = 'pig';
       if (hint) for (const t of targets) if (!found.has(t)) marks[t] = 'dot';
       board.setMarks(marks);
       board.setHighlights({ [level.from]: 'selected' });
@@ -273,7 +273,7 @@ export function playLevel({ board, level, lesson, talk, setHelp, onWin }) {
       board.setPieces([...pieces].map(([sq, p]) => ({ ...p, sq })));
       const marks = {};
       if (apples) for (const a of apples) marks[a] = 'apple';
-      for (const f of found) marks[f] = 'star';
+      for (const f of found) marks[f] = 'pig';
       board.setMarks(marks);
       board.setHighlights({ [level.from]: 'selected', ...hl });
     };
