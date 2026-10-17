@@ -4,6 +4,7 @@ import { playLevel } from './lessonPlayer.js';
 import { say, sfx, isMuted, setMuted, stopSpeaking } from './sound.js';
 import { isDone, doneCount, markLevelDone, markLessonDone } from './progress.js';
 import { GameScreen, endMessage } from './game.js';
+import { mood, confetti } from './mascot.js';
 
 const $ = (id) => document.getElementById(id);
 const board = new Board($('board'));
@@ -47,6 +48,7 @@ const gameScreen = new GameScreen({
   onEnd: (result, game) => overlay({
     text: endMessage(result, game),
     stars: result === 'win' ? 3 : 0,
+    party: result === 'win',
     button: 'Play again 🔄',
     speak: true,
     then: () => gameScreen.start(true),
@@ -123,6 +125,7 @@ function levelWon(lesson, index) {
     overlay({
       text: `You learned the ${lesson.title}!`,
       stars: lesson.levels.length,
+      party: true,
       button: 'Yay! 🎉',
       speak: true,
       then: () => show('lessons'),
@@ -138,8 +141,9 @@ function levelWon(lesson, index) {
   }
 }
 
-function overlay({ text, stars = 0, img, button, speak, then }) {
+function overlay({ text, stars = 0, img, button, speak, then, party }) {
   sfx.oink();
+  if (party) confetti();
   $('overlay-text').textContent = text;
   $('overlay-stars').innerHTML = img ? `<img class="intro-piece" src="${img}" alt="">` : '⭐'.repeat(stars);
   const btn = $('overlay-btn');
@@ -150,8 +154,11 @@ function overlay({ text, stars = 0, img, button, speak, then }) {
     then();
   };
   $('overlay').classList.remove('hidden');
+  mood(stars || img ? 'happy' : 'sad');
   if (speak) say(text);
 }
+
+document.querySelector('#home .mascot').addEventListener('click', () => { sfx.oink(); mood('happy'); });
 
 // Keep iPad Safari from zooming or scrolling the page on double-tap and drag.
 document.addEventListener('dblclick', (e) => e.preventDefault());

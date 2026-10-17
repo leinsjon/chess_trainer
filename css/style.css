@@ -29,7 +29,7 @@ html, body {
 body {
   font-family: var(--font);
   color: var(--ink);
-  background: linear-gradient(var(--sky) 0 62%, var(--grass) 62% 100%);
+  background: var(--sky) url("../assets/scene.svg") center bottom / cover no-repeat fixed;
 }
 
 button {
@@ -46,7 +46,7 @@ button {
 
 /* Home */
 #home { justify-content: center; gap: 12px; }
-h1 { font-size: clamp(40px, 8vw, 72px); margin: 0; color: var(--pink-dark); text-shadow: 3px 3px 0 #fff; }
+h1 { font-size: clamp(44px, 9vw, 84px); margin: 0; color: var(--pink-dark); text-shadow: 4px 4px 0 #fff, -2px -2px 0 #fff; letter-spacing: 1px; }
 .home-buttons { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin-top: 16px; }
 
 .big-btn {
@@ -82,8 +82,18 @@ h1 { font-size: clamp(40px, 8vw, 72px); margin: 0; color: var(--pink-dark); text
 }
 .icon-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 #d9c7e8; }
 
-.mascot { font-size: 48px; line-height: 1; }
-.mascot.big { font-size: clamp(90px, 18vw, 150px); }
+.mascot { width: 64px; height: 64px; flex: none; transform-origin: 50% 90%; }
+.mascot.big { width: clamp(120px, 22vw, 200px); height: auto; aspect-ratio: 1; }
+#home .mascot { animation: bob 2.4s ease-in-out infinite; cursor: pointer; }
+.mascot.happy { animation: jump 0.7s ease; }
+.mascot.sad { animation: wobble 0.6s ease; }
+@keyframes bob { 50% { transform: translateY(-10px) rotate(-3deg); } }
+@keyframes jump { 30% { transform: translateY(-24px) scale(1.08); } 55% { transform: translateY(0) scale(0.95, 1.05); } 75% { transform: translateY(-8px); } }
+@keyframes wobble { 20% { transform: rotate(-12deg); } 45% { transform: rotate(10deg); } 70% { transform: rotate(-5deg); } }
+
+.confetti { position: fixed; inset: 0; pointer-events: none; z-index: 20; overflow: hidden; }
+.confetti span { position: absolute; top: -60px; animation: fall 2.4s ease-in forwards; }
+@keyframes fall { to { transform: translateY(110vh) rotate(540deg); } }
 
 /* Top bar */
 .topbar {

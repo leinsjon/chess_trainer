@@ -8,12 +8,15 @@
   <meta name="apple-mobile-web-app-title" content="Piggy Chess">
   <meta name="theme-color" content="#ffd6e7">
   <title>Piggy Chess</title>
+  <link rel="icon" type="image/svg+xml" href="assets/pig.svg">
+  <link rel="apple-touch-icon" href="assets/icon-180.png">
+  <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <main id="app">
     <section id="home" class="screen active">
-      <div class="mascot big">🐷</div>
+      <img class="mascot big" src="assets/pig.svg" alt="">
       <h1>Piggy Chess</h1>
       <div class="home-buttons">
         <button class="big-btn" data-go="lessons">📚 Learn</button>
@@ -38,7 +41,7 @@
       </header>
       <div id="level-dots" class="level-dots"></div>
       <div class="talk-row">
-        <div class="mascot">🐷</div>
+        <img class="mascot" src="assets/pig.svg" alt="">
         <div id="talk" class="bubble"></div>
         <button class="icon-btn repeat-btn" aria-label="Say it again">🗣️</button>
       </div>
@@ -55,7 +58,7 @@
         <button class="icon-btn sound-btn" aria-label="Sound">🔊</button>
       </header>
       <div class="talk-row">
-        <div class="mascot">🐷</div>
+        <img class="mascot" src="assets/pig.svg" alt="">
         <div id="play-talk" class="bubble"></div>
         <button class="icon-btn repeat-btn" aria-label="Say it again">🗣️</button>
       </div>
@@ -68,7 +71,7 @@
 
     <div id="overlay" class="overlay hidden">
       <div class="card">
-        <div class="mascot big">🐷</div>
+        <img class="mascot big" src="assets/pig.svg" alt="">
         <div id="overlay-stars" class="stars"></div>
         <h2 id="overlay-text"></h2>
         <button class="big-btn" id="overlay-btn">Next ➡️</button>

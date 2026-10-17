@@ -4,6 +4,7 @@ import { Chess } from '../vendor/chess.js';
 import { lessonMoves } from './lessonMoves.js';
 import { say, sfx } from './sound.js';
 import { countMove } from './progress.js';
+import { mood } from './mascot.js';
 
 const NAMES = { p: 'pawn', n: 'knight', b: 'bishop', r: 'rook', q: 'queen', k: 'king' };
 
@@ -13,11 +14,13 @@ export function playLevel({ board, level, lesson, talk, setHelp, onWin }) {
     board.onTap = null;
     setHelp(false);
     sfx.win();
+    mood('happy');
     talk(msg, true);
     setTimeout(onWin, 1400);
   };
   const oops = (sq, msg) => {
     sfx.oops();
+    mood('sad');
     board.flash(sq, 'bad');
     talk(msg, true);
   };

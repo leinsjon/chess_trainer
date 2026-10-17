@@ -4,6 +4,7 @@ import { Chess } from '../vendor/chess.js';
 import { lessonMoves } from './lessonMoves.js';
 import { sfx } from './sound.js';
 import { countMove, countGame } from './progress.js';
+import { mood } from './mascot.js';
 
 const NAMES = { p: 'pawn', n: 'knight', b: 'bishop', r: 'rook', q: 'queen', k: 'king' };
 const SAVE_KEY = 'chessTrainer.game';
@@ -127,6 +128,7 @@ export class GameScreen {
       const pseudo = new Map();
       for (const row of this.game.board()) for (const q of row) if (q) pseudo.set(q.square, q);
       sfx.oops();
+      mood('sad');
       this.board.flash(sq, 'bad');
       if (lessonMoves(this.selected, pseudo).includes(sq)) {
         this.talk(this.game.inCheck() ? 'Your king is in check! Keep him safe.' : 'Not that one! Your king would be in danger.', true);
@@ -146,6 +148,7 @@ export class GameScreen {
     this.last = move;
     this.selected = null;
     move.captured ? sfx.eat() : sfx.move();
+    if (move.captured && move.color === 'w') mood('happy');
     this.draw();
     this.save();
     return move;
