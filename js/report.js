@@ -21,6 +21,7 @@ function payload() {
         lessons: d.lessons.join(', '),
         games: d.games,
         wins: d.wins,
+        tiny: d.tiny || 0,
       };
     }),
   });

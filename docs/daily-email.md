@@ -21,5 +21,6 @@ To try the email right away, pick **sendDailyReport** in the function menu and
 click **Run**.
 
 The report includes minutes played, moves made, lesson levels and lessons
-finished, and games against the bot, plus a seven-day table. Usage is counted
+finished, games against the bot, and answers in the Little Piggy games, plus a
+seven-day table. Usage is counted
 per iPad, and only while the game is on screen and being touched.

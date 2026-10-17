@@ -6,6 +6,7 @@ import { isDone, doneCount, markLevelDone, markLessonDone } from './progress.js'
 import { GameScreen, endMessage } from './game.js';
 import { mood, confetti } from './mascot.js';
 import { startReporting } from './report.js';
+import { TinyScreen } from './tiny.js';
 
 const $ = (id) => document.getElementById(id);
 const board = new Board($('board'));
@@ -19,6 +20,7 @@ function show(screen) {
   document.querySelectorAll('.screen').forEach((s) => s.classList.toggle('active', s.id === screen));
   if (screen === 'lessons') renderLessons();
   if (screen === 'play') gameScreen.start(false);
+  if (screen === 'tiny') tinyScreen.open();
   else gameScreen.stop();
 }
 
@@ -55,6 +57,12 @@ const gameScreen = new GameScreen({
     then: () => gameScreen.start(true),
   }),
 });
+const tinyScreen = new TinyScreen({
+  stage: $('tiny-stage'),
+  menu: $('tiny-menu'),
+  talk: (text, speak) => talk(text, speak, $('tiny-talk')),
+});
+$('tiny-games-btn').addEventListener('click', () => tinyScreen.open());
 $('undo-btn').addEventListener('click', () => gameScreen.undo());
 $('new-game-btn').addEventListener('click', () => gameScreen.start(true));
 $('help-btn').addEventListener('click', () => current?.ctl.help());

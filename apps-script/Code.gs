@@ -4,7 +4,7 @@
 
 const REPORT_EMAIL = ''; // leave empty to send to the account that runs the script
 const SEND_HOUR = 19;    // 7pm, in the spreadsheet's time zone
-const HEADERS = ['Date', 'Minutes', 'Moves', 'Levels', 'Lessons finished', 'Games', 'Wins', 'Updated'];
+const HEADERS = ['Date', 'Minutes', 'Moves', 'Levels', 'Lessons finished', 'Games', 'Wins', 'Updated', 'Little Piggy answers'];
 
 function usageSheet_() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -28,7 +28,7 @@ function doPost(e) {
     const dates = sheet.getRange(1, 1, sheet.getLastRow(), 1).getValues().map((r) => String(r[0]));
     for (const d of data.days || []) {
       if (!/^\d{4}-\d{2}-\d{2}$/.test(d.date)) continue;
-      const row = [d.date, num_(d.minutes), num_(d.moves), num_(d.levels), String(d.lessons || '').slice(0, 300), num_(d.games), num_(d.wins), new Date()];
+      const row = [d.date, num_(d.minutes), num_(d.moves), num_(d.levels), String(d.lessons || '').slice(0, 300), num_(d.games), num_(d.wins), new Date(), num_(d.tiny)];
       const i = dates.indexOf(d.date);
       if (i >= 1) {
         sheet.getRange(i + 1, 1, 1, row.length).setValues([row]);
@@ -57,8 +57,8 @@ function sendDailyReport() {
 
   const t = byDate[today];
   let summary;
-  if (!t || (!t[1] && !t[2])) {
-    summary = '<p>Zoe didn\'t play Piggy Chess today.</p>';
+  if (!t || (!t[1] && !t[2] && !t[8])) {
+    summary = '<p>Nobody played Piggy Chess today.</p>';
   } else {
     summary = `
       <ul>
@@ -67,6 +67,7 @@ function sendDailyReport() {
         <li><b>Lesson levels finished:</b> ${t[3]}</li>
         <li><b>Lessons completed:</b> ${t[4] || 'none'}</li>
         <li><b>Games vs the bot:</b> ${t[5]} (won ${t[6]})</li>
+        <li><b>Little Piggy answers:</b> ${t[8] || 0}</li>
       </ul>`;
   }
 

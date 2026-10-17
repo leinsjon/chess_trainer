@@ -53,6 +53,12 @@ export function countMove() {
   save();
 }
 
+export function countTiny() {
+  const d = day();
+  d.tiny = (d.tiny || 0) + 1;
+  save();
+}
+
 export function countGame(won) {
   const d = day();
   d.games++;

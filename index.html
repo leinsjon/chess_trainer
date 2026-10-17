@@ -21,6 +21,7 @@
       <div class="home-buttons">
         <button class="big-btn" data-go="lessons">📚 Learn</button>
         <button class="big-btn" data-go="play">♟️ Play</button>
+        <button class="big-btn little-btn" data-go="tiny">🐣 Little Piggy</button>
       </div>
     </section>
 
@@ -66,6 +67,29 @@
       <div class="under-board">
         <button class="pill-btn" id="undo-btn">↩️ Undo</button>
         <button class="pill-btn" id="new-game-btn">🔄 New game</button>
+      </div>
+    </section>
+
+    <section id="tiny" class="screen">
+      <header class="topbar">
+        <button class="icon-btn" data-go="home" aria-label="Back">⬅️</button>
+        <h2>Little Piggy</h2>
+        <button class="icon-btn sound-btn" aria-label="Sound">🔊</button>
+      </header>
+      <div class="talk-row">
+        <img class="mascot" src="assets/pig.svg" alt="">
+        <div id="tiny-talk" class="bubble"></div>
+        <button class="icon-btn repeat-btn" aria-label="Say it again">🗣️</button>
+      </div>
+      <div id="tiny-menu" class="tiny-menu">
+        <button class="tiny-game" data-game="meet"><span>👋</span>Meet</button>
+        <button class="tiny-game" data-game="find"><span>🔍</span>Find</button>
+        <button class="tiny-game" data-game="colors"><span>⚪⚫</span>Colors</button>
+        <button class="tiny-game" data-game="home"><span>🏠</span>Home</button>
+      </div>
+      <div id="tiny-stage" class="tiny-stage"></div>
+      <div class="under-board">
+        <button class="pill-btn" id="tiny-games-btn">🎲 Games</button>
       </div>
     </section>
 

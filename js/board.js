@@ -118,7 +118,7 @@ export class Board {
   setHighlights(hl = {}) {
     for (const sq in this.squares) {
       const d = this.squares[sq];
-      d.classList.remove('selected', 'last', 'danger', 'good', 'bad', 'path');
+      d.classList.remove('selected', 'last', 'danger', 'good', 'bad', 'path', 'sparkle');
       if (hl[sq]) d.classList.add(...hl[sq].split(' '));
     }
   }
